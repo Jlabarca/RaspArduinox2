@@ -1,0 +1,110 @@
+import sys
+import socket
+class roboc:
+
+	__ip = u"127.0.0.1"
+	__socket = socket.socket()
+	__port = 11111
+
+	def setIp(self, ip):
+		try:
+			if self.__ip == ip: 
+			    print ip+" is the current ip saved"
+			    return True
+			else:
+				aux = self.__ip
+				self.__ip = ip
+				print "Ip has changed from "+aux+" to "+self.__ip
+				return True
+		except ValueError as error:	
+			print "Ip cannot be changed"
+			print error
+			return False
+	
+	def setPort(self, port):
+		try:
+			if self.__port == port:
+			    print port+" is the current port saved"
+			    return True
+			else:
+				aux = self.__port
+				self.__port = port
+				print "Port has changed from "+aux+" to "+self.__port
+				return True
+		except ValueError as error:	
+			print "Port cannot be changed"
+			print error
+			return False
+
+	def getIp(self):
+		print self.__ip
+
+	def getPort(self):
+		print self.__port 
+
+	def forward(self):
+		try:
+			self.__socket = socket.socket()
+			self.__socket.connect((self.__ip, self.__port))
+			self.__socket.send("1000")
+		except:
+			print "No device connected"
+
+	def backward(self):
+		try:
+			self.__socket = socket.socket()
+			self.__socket.connect((self.__ip, self.__port))
+			self.__socket.send("2000")
+		except:
+			print "No device connected"
+
+	def stop(self):
+		try:
+			self.__socket = socket.socket()
+			self.__socket.connect((self.__ip, self.__port))
+			self.__socket.send("3000")
+		except:
+			print "No device connected"
+
+	def turnLeft(self):
+		try:
+			self.__socket = socket.socket()
+			self.__socket.connect((self.__ip, self.__port))
+			self.__socket.send("5000")
+		except:
+			print "No device connected"
+
+	def turnRight(self):
+		try:
+			self.__socket = socket.socket()
+			self.__socket.connect((self.__ip, self.__port))
+			self.__socket.send("6000")
+		except:
+			print "No device connected"
+
+	def setSpeed(self, speed):
+		try:
+			self.__socket = socket.socket()
+			self.__socket.connect((self.__ip, self.__port))
+			data = 4000 + speed
+			self.__socket.send(str(data))
+		except:
+			print "No device connected"
+
+	def getDistances(self):
+		try:
+			self.__socket = socket.socket()
+			self.__socket.connect((self.__ip, self.__port))
+			self.__socket.send("7000")
+		except:
+			print "No device connected"
+
+	def getDegrees(self):
+		try:
+			self.__socket = socket.socket()
+			self.__socket.connect((self.__ip, self.__port))
+			self.__socket.send("8000")
+		except:
+			print "No device connected"
+
+
