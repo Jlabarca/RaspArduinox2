@@ -8,14 +8,21 @@
 #include <Adafruit_Sensor.h>
 #include <Adafruit_HMC5883_U.h>
 Adafruit_HMC5883_Unified mag = Adafruit_HMC5883_Unified(12345);
+#define TAM 5
+
+struct data{
+  double distL;
+  double distR;
+  double distF;
+  float Degrees;
+};
 
 //*Variables*//
-double distanceF, distanceR, distanceL,promF;
-boolean moving;
-#define TAM 5
 double distF[TAM],distR[TAM],distL[TAM]; 
 int j=0;
 int i, op, vel;
+data lecturas;
+
 
 
 void setup()
@@ -58,7 +65,7 @@ void loop()
     heading -= 2*PI;
    
   // Convert radians to degrees for readability.
-  float headingDegrees = heading * 180/M_PI; 
+  lecturas.Degrees = heading * 180/M_PI; 
   
   //Calculos Sensores distancia
   
@@ -139,7 +146,7 @@ void loop()
            /*int x = event.magnetic.x;
            int y = event.magnetic.y;
            int z = event.magnetic.z;*/
-           int h = headingDegrees;
+           int h = lecturas.Degrees;
            sprintf(f, "11000,%d",h);
            Serial.println(f);
            break;
@@ -155,8 +162,8 @@ double getLeftDistance(){
   delayMicroseconds(10); 
   digitalWrite(trigLPin, LOW);
   duration = pulseIn(echoLPin, HIGH);
-  distanceL = (duration/2) / 29.1;
-  return distanceL;
+  lecturas.distL = (duration/2) / 29.1;
+  return lecturas.distL;
 }
 double getRightDistance(){
   long duration, distance;
@@ -166,8 +173,8 @@ double getRightDistance(){
   delayMicroseconds(10); 
   digitalWrite(trigRPin, LOW);
   duration = pulseIn(echoRPin, HIGH);
-  distanceR = (duration/2) / 29.1;
-  return distanceR;
+  lecturas.distR = (duration/2) / 29.1;
+  return lecturas.distL;
 }
 double getFrontDistance(){
   long duration, distance;
@@ -177,12 +184,12 @@ double getFrontDistance(){
   delayMicroseconds(10); 
   digitalWrite(trigFPin, LOW);
   duration = pulseIn(echoFPin, HIGH);
-  distanceF = (duration/2) / 29.1;
-  return distanceF;
+  lecturas.distF = (duration/2) / 29.1;
+  return lecturas.distF;
 }
 
 boolean isBlocked(){
-  if((int)distanceF<15 && (int)distanceF>5){
+  if((int)lecturas.distF<15 && (int)lecturas.distF>5){
     return true;
   }else
     return false;
